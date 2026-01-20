@@ -1,3 +1,3 @@
-provider "scaffolding" {
+provider "googleworkspace" {
   # example configuration here
 }

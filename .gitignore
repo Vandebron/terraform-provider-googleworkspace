@@ -1,4 +1,5 @@
 *.dll
+credentials.json
 *.exe
 .DS_Store
 example.tf
