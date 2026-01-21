@@ -13,27 +13,27 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
-func TestAccExampleResource(t *testing.T) {
+func TestAccGroupResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccExampleResourceConfig("one"),
+				Config: testAccGroupResourceConfig("test", "test@example.com"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
+						"googleworkspace_group.test",
 						tfjsonpath.New("id"),
 						knownvalue.StringExact("example-id"),
 					),
 					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
+						"googleworkspace_group.test",
 						tfjsonpath.New("defaulted"),
 						knownvalue.StringExact("example value when not configured"),
 					),
 					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
+						"googleworkspace_group.test",
 						tfjsonpath.New("configurable_attribute"),
 						knownvalue.StringExact("one"),
 					),
@@ -41,7 +41,7 @@ func TestAccExampleResource(t *testing.T) {
 			},
 			// ImportState testing
 			{
-				ResourceName:      "scaffolding_example.test",
+				ResourceName:      "googleworkspace_group.test",
 				ImportState:       true,
 				ImportStateVerify: true,
 				// This is not normally necessary, but is here because this
@@ -52,20 +52,20 @@ func TestAccExampleResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccExampleResourceConfig("two"),
+				Config: testAccGroupResourceConfig("test", "test@example.com"),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
+						"googleworkspace_group.test",
 						tfjsonpath.New("id"),
 						knownvalue.StringExact("example-id"),
 					),
 					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
+						"googleworkspace_group.test",
 						tfjsonpath.New("defaulted"),
 						knownvalue.StringExact("example value when not configured"),
 					),
 					statecheck.ExpectKnownValue(
-						"scaffolding_example.test",
+						"googleworkspace_group.test",
 						tfjsonpath.New("configurable_attribute"),
 						knownvalue.StringExact("two"),
 					),
@@ -76,10 +76,11 @@ func TestAccExampleResource(t *testing.T) {
 	})
 }
 
-func testAccExampleResourceConfig(configurableAttribute string) string {
+func testAccGroupResourceConfig(name, email string) string {
 	return fmt.Sprintf(`
-resource "scaffolding_example" "test" {
-  configurable_attribute = %[1]q
+resource "googleworkspace_group" "test" {
+  name = %[1]q
+	email = %[2]q
 }
-`, configurableAttribute)
+`, name, email)
 }

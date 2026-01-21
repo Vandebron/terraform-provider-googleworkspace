@@ -1,3 +1,3 @@
-data "scaffolding_example" "example" {
+data "group" "example" {
   configurable_attribute = "some-value"
 }
