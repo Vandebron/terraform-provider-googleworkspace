@@ -19,6 +19,7 @@ import (
 	"golang.org/x/oauth2/google"
 
 	admin "google.golang.org/api/admin/directory/v1"
+	cloudidentity "google.golang.org/api/cloudidentity/v1"
 )
 
 // Ensure GoogleWorkspaceProvider satisfies various provider interfaces.
@@ -81,7 +82,11 @@ func (p *GoogleWorkspaceProvider) Configure(
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}
 
-	config, err := google.JWTConfigFromJSON(b, admin.AdminDirectoryGroupScope, admin.AdminDirectoryUserScope)
+	config, err := google.JWTConfigFromJSON(b,
+		admin.AdminDirectoryGroupScope,
+		admin.AdminDirectoryUserScope,
+		cloudidentity.CloudIdentityPoliciesScope,
+	)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to parse service account JSON",
@@ -121,6 +126,7 @@ func (p *GoogleWorkspaceProvider) EphemeralResources(ctx context.Context) []func
 func (p *GoogleWorkspaceProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewGroupDataSource,
+		NewCloudIdentityPolicyDataSource,
 	}
 }
 
