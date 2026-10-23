@@ -1,6 +1,6 @@
 module terraform-provider-googleworkspace
 
-go 1.25.5
+go 1.26.10
 
 require (
 	github.com/hashicorp/terraform-plugin-framework v1.17.0
